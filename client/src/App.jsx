@@ -1,145 +1,61 @@
-import { useState } from 'react'
-import './App.css'
-import axios from 'axios'
+import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate, data } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import './App.css';
+import Landing from './components/Landing';
+import Login from './components/Login';
+import Signup from './components/Signup';
+import Dashboard from './components/Dashboard';
+import ProtectedRoute from './components/ProtectedRoute';
+import Navbar from './components/Navbar';
+import { useDispatch, useSelector } from 'react-redux';
+import FlashMessage from './components/FlashMessage.jsx';
+import axios from 'axios';
+import { setIsUserAuthorised } from './redux/slices/isAuthorisedSlice.js';
 
 function App() {
-  const [formPayload, setFormPayload] = useState({
-    currentClass: "",
-    percentage: "",
-    favoriteSubject: "",
-    areasOfInterest: "",
-    workPreference: "",
-    careerValues: "",
-    currentLocation: "",
-    preferredStudyLocation: ""
+  const flashMessage = useSelector((state) => state.flashMessage.message);
+  const flashMessageStatus = useSelector((state) => state.flashMessage.success);
+  const isUserAuthorised = useSelector((state) => state.isUserAuthorised.value);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const [user, setUser] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
   });
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    console.log("Form Submitted:", formPayload);
+  const getUserDetails = async (token) => {
+    return await axios.get(`${import.meta.env.VITE_CLIENT_URL}/user/details`, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+  }
 
-    try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_CLIENT_URL}/generate`,
-        formPayload,
-        {
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-        }
-      );
-      console.log("Response:", response.data);
-    } catch (err) {
-      console.error("Error:", err);
-    }
-  };
+  useEffect(() => {
+    const token = localStorage.getItem('bright-path-auth-token');
+    getUserDetails(token)
+      .then((res) => {
+        setUser(res.data.user)
+        dispatch(setIsUserAuthorised(true))
+      }).catch((err) => {
+        setUser(null)
+        localStorage.removeItem('bright-path-auth-token')
+        dispatch(setIsUserAuthorised(false))
+      })
+  }, [localStorage.getItem('bright-path-auth-token')])
 
   return (
-    <form className="p-4">
-      <label htmlFor="currentClass">Current Class</label>
-      <input
-        type="text"
-        id="currentClass"
-        value={formPayload.currentClass}
-        onChange={(e) =>
-          setFormPayload({ ...formPayload, currentClass: e.target.value })
-        }
-        required
-        className="border p-2 rounded w-full mt-2"
-      />
-
-      <label htmlFor="percentage">Percentage</label>
-      <input
-        type="number"
-        id="percentage"
-        value={formPayload.percentage}
-        onChange={(e) =>
-          setFormPayload({ ...formPayload, percentage: e.target.value })
-        }
-        required
-        className="border p-2 rounded w-full mt-2"
-      />
-
-      <label htmlFor="favoriteSubject">Favorite Subject</label>
-      <input
-        type="text"
-        id="favoriteSubject"
-        value={formPayload.favoriteSubject}
-        onChange={(e) =>
-          setFormPayload({ ...formPayload, favoriteSubject: e.target.value })
-        }
-        required
-        className="border p-2 rounded w-full mt-2"
-      />
-
-      <label htmlFor="areasOfInterest">Areas Of Interest</label>
-      <input
-        type="text"
-        id="areasOfInterest"
-        value={formPayload.areasOfInterest}
-        onChange={(e) =>
-          setFormPayload({ ...formPayload, areasOfInterest: e.target.value })
-        }
-        required
-        className="border p-2 rounded w-full mt-2"
-      />
-
-      <label htmlFor="careerValues">Career Values</label>
-      <input
-        type="text"
-        id="careerValues"
-        value={formPayload.careerValues}
-        onChange={(e) =>
-          setFormPayload({ ...formPayload, careerValues: e.target.value })
-        }
-        required
-        className="border p-2 rounded w-full mt-2"
-      />
-
-      <label htmlFor="workPreference">Work Preference</label>
-      <input
-        type="text"
-        id="workPreference"
-        value={formPayload.workPreference}
-        onChange={(e) =>
-          setFormPayload({ ...formPayload, workPreference: e.target.value })
-        }
-        required
-        className="border p-2 rounded w-full mt-2"
-      />
-
-      <label htmlFor="currentLocation">Current Location</label>
-      <input
-        type="text"
-        id="currentLocation"
-        value={formPayload.currentLocation}
-        onChange={(e) =>
-          setFormPayload({ ...formPayload, currentLocation: e.target.value })
-        }
-        required
-        className="border p-2 rounded w-full mt-2"
-      />
-
-      <label htmlFor="preferredStudyLocation">Preferred Study Location</label>
-      <input
-        type="text"
-        id="preferredStudyLocation"
-        value={formPayload.preferredStudyLocation}
-        onChange={(e) =>
-          setFormPayload({ ...formPayload, preferredStudyLocation: e.target.value })
-        }
-        required
-        className="border p-2 rounded w-full mt-2"
-      />
-
-      <button
-        type="submit"
-        onClick={(e) => handleSubmit(e)}
-        className="bg-blue-500 text-white px-4 py-2 rounded mt-4"
-      >
-        Submit
-      </button>
-    </form>
+    <div className="App">
+      <Navbar user={user} />
+      {flashMessage && <FlashMessage status={flashMessageStatus} message={flashMessage} />}
+      <Routes>
+        <Route path="/" element={isUserAuthorised ? <Navigate to="/dashboard" replace /> : <Landing />} />
+        <Route path="/login" element={isUserAuthorised ? <Navigate to="/" replace /> : <Login />} />
+        <Route path="/signup" element={isUserAuthorised ? <Navigate to="/" replace /> : <Signup />} />
+        <Route path="/dashboard" element={<ProtectedRoute children={<Dashboard />} />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </div>
   );
 }
 
