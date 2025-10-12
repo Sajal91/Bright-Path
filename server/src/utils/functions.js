@@ -1,5 +1,6 @@
 import { GoogleGenAI } from "@google/genai";
 import dotenv from 'dotenv'
+import { getFinalPrompt } from "./prompt.js";
 
 dotenv.config({ path: '.env' })
 
@@ -8,40 +9,13 @@ const ai = new GoogleGenAI({
 });
 
 
-export async function generate() {
+export async function generate(payload) {
+    let prompt = getFinalPrompt(payload)
+    console.log(prompt)
+
     const response = await ai.models.generateContent({
         model: "gemini-2.5-flash",
-        contents: `You are an academic and career guidance assistant for students in India.  
-Based on the following inputs, suggest suitable academic streams, courses, career paths, and nearby government colleges.
-
-            Inputs:  
-- Aptitude Score: 72 % (Strong in Maths, Accounts & Logical Reasoning)
-        - Interests: Web Development, Problem Solving
-    - Location: East Delhi, Delhi  
-
-Output Format(strictly follow this JSON structure): {
-        "recommended_streams": [
-            {
-                "stream": "Science (PCM)",
-                "suggested_courses": ["B.Tech in Computer Science", "B.Sc in Data Science"],
-                "career_options": ["Software Engineer", "Data Scientist"]
-            },
-            {
-                "stream": "Commerce with Maths",
-                "suggested_courses": ["B.Com (Hons)", "BBA"],
-                "career_options": ["Financial Analyst", "Business Consultant"]
-            }
-        ],
-        "nearby_colleges": [
-            "Government Degree College, Lucknow",
-            "King George's Government College, Lucknow",
-            "Lucknow University - Government Affiliated Programs"
-        ],
-            "scholarship_alerts": [
-                "UP Government Post-Matric Scholarship",
-                "National Means-cum-Merit Scholarship"
-            ]
-    }`,
+        contents: prompt,
     });
     return response;
 }
