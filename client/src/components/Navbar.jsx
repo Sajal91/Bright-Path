@@ -40,19 +40,21 @@ const Navbar = ({ user }) => {
                                     </button>
                                 </>
                                 :
-                                <NavLink
-                                    to="/login"
-                                    className="text-gray-600 hover:text-gray-900 px-3 py-2 text-sm font-medium transition-colors"
-                                >
-                                    Sign In
-                                </NavLink>
+                                <>
+                                    <NavLink
+                                        to="/login"
+                                        className="text-gray-600 hover:text-gray-900 px-3 py-2 text-sm font-medium transition-colors"
+                                    >
+                                        Sign In
+                                    </NavLink>
+                                    <NavLink
+                                        to="/signup"
+                                        className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 transform hover:scale-105"
+                                    >
+                                        Get Started
+                                    </NavLink>
+                                </>
                         }
-                        <NavLink
-                            to="/signup"
-                            className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 transform hover:scale-105"
-                        >
-                            Get Started
-                        </NavLink>
                     </div>
                 </div>
             </div>
