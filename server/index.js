@@ -24,29 +24,7 @@ app.use(cors({
 
 app.use(express.json());
 
-app.use('/generate', (req, res, next) => {
-    const authHeader = req.headers.authorization;
-
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
-        return res.status(401).json({ message: "Unauthorized: No token provided" });
-    }
-
-    const token = authHeader.split(" ")[1]; // OR authHeader.slice(7);
-
-    try {
-        let user = jwt.verify(token, process.env.JWT_PRIVATE_KEY);
-        req.user = user;
-    } catch (err) {
-        console.log("err", err)
-        return res.status(403).json({ message: "Invalid or expired token" });
-    }
-
-    // console.log("Extracted Token:", token);
-
-    next()
-})
-
-app.post('/generate', async (req, res) => {
+app.post('/generate', verifyToken, async (req, res) => {
     try {
         if (!req.user) {
             return res.status(401).json({ message: "Unauthorized user" });
@@ -144,6 +122,33 @@ app.get('/user/details', verifyToken, async (req, res) => {
         res.status(201).json({ success: true, user: userDetails, message: "User Details Fetched Successfully" })
     } else {
         res.status(201).json({ success: false, message: "Unable to get user details" })
+    }
+})
+
+app.get('/user/generations', verifyToken, async (req, res) => {
+    try {
+        if (!req.user) {
+            return res.status(401).json({ message: "Unauthorized user" });
+        }
+
+        const user = await User.findOne({ email: req.user.email });
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        const generations = await Generation.find({ userId: user._id })
+            .sort({ createdAt: -1 }) // Sort by newest first
+            .limit(10); // Limit to last 10 generations
+
+        res.status(200).json({ 
+            success: true, 
+            generations,
+            message: "Generations fetched successfully" 
+        });
+
+    } catch (error) {
+        console.error("Error fetching generations:", error);
+        res.status(500).json({ message: "Server error", error: error.message });
     }
 })
 
