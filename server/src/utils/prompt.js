@@ -15,24 +15,24 @@ export const getFinalPrompt = (payload) => {
     - Preferred Study Location: ${preferredStudyLocation}
 
     Output Format(strictly follow this JSON structure): {
-        "recommended_streams": [
+        "recommendedStreams": [
             {
                 "stream": "Science (PCM)",
-                "suggested_courses": ["B.Tech in Computer Science", "B.Sc in Data Science"],
-                "career_options": ["Software Engineer", "Data Scientist"]
+                "suggestedCourses": ["B.Tech in Computer Science", "B.Sc in Data Science"],
+                "careerOptions": ["Software Engineer", "Data Scientist"]
             },
             {
                 "stream": "Commerce with Maths",
-                "suggested_courses": ["B.Com (Hons)", "BBA"],
-                "career_options": ["Financial Analyst", "Business Consultant"]
+                "suggestedCourses": ["B.Com (Hons)", "BBA"],
+                "careerOptions": ["Financial Analyst", "Business Consultant"]
             }
         ],
-    "nearby_colleges": [
+    "nearbyColleges": [
         "Government Degree College, East Delhi",
         "Shaheed Rajguru College of Applied Sciences for Women, Delhi University",
         "Maharaja Agrasen College (DU), East Delhi"
     ],
-    "scholarship_alerts": [
+    "scholarshipAlerts": [
         "Delhi Government Merit Scholarship",
         "National Means-cum-Merit Scholarship"
     ]
