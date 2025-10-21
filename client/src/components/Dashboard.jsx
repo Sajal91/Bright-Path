@@ -331,7 +331,7 @@ const Dashboard = () => {
                 )}
 
                 {/* Nearby Colleges Section */}
-                {recommendations.nearby_colleges && recommendations.nearby_colleges.length > 0 && (
+                {recommendations.nearbyColleges && recommendations.nearbyColleges.length > 0 && (
                   <div className="mb-8">
                     <div className="flex items-center mb-4">
                       <div className="h-8 w-8 bg-gradient-to-r from-green-500 to-emerald-500 rounded-lg flex items-center justify-center mr-3">
@@ -343,7 +343,7 @@ const Dashboard = () => {
                     </div>
                     <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-xl p-5">
                       <div className="space-y-3">
-                        {recommendations.nearby_colleges.map((college, index) => (
+                        {recommendations.nearbyColleges.map((college, index) => (
                           <div key={index} className="flex items-center p-3 bg-white rounded-lg border border-green-100 hover:shadow-md transition-shadow">
                             <div className="h-10 w-10 bg-green-100 rounded-full flex items-center justify-center mr-3">
                               <svg className="h-5 w-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -365,7 +365,7 @@ const Dashboard = () => {
                 )}
 
                 {/* Scholarship Alerts Section */}
-                {recommendations.scholarship_alerts && recommendations.scholarship_alerts.length > 0 && (
+                {recommendations.scholarshipAlerts && recommendations.scholarshipAlerts.length > 0 && (
                   <div className="mb-8">
                     <div className="flex items-center mb-4">
                       <div className="h-8 w-8 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center mr-3">
@@ -377,7 +377,7 @@ const Dashboard = () => {
                     </div>
                     <div className="bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200 rounded-xl p-5">
                       <div className="space-y-3">
-                        {recommendations.scholarship_alerts.map((scholarship, index) => (
+                        {recommendations.scholarshipAlerts.map((scholarship, index) => (
                           <div key={index} className="flex items-center p-3 bg-white rounded-lg border border-purple-100 hover:shadow-md transition-shadow">
                             <div className="h-10 w-10 bg-purple-100 rounded-full flex items-center justify-center mr-3">
                               <svg className="h-5 w-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
