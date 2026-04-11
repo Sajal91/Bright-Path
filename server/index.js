@@ -8,6 +8,8 @@ import dotenv from "dotenv"
 import bcrypt from "bcryptjs";
 import { verifyToken } from './src/middlewares/verifyToken.js';
 import Generation from './src/models/generationSchema.js';
+import path from "path";
+import { fileURLToPath } from "url";
 
 dotenv.config({ path: '.env' })
 
@@ -22,7 +24,17 @@ app.use(cors({
     methods: ["GET", "POST"]
 }));
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Serve static files
+app.use(express.static(path.join(__dirname, "public")));
+
 app.use(express.json());
+
+app.get("/", (req, res) => {
+    res.sendFile(path.join(__dirname, "public", "index.html"));
+});
 
 app.post('/generate', verifyToken, async (req, res) => {
     try {
@@ -140,10 +152,10 @@ app.get('/user/generations', verifyToken, async (req, res) => {
             .sort({ createdAt: -1 }) // Sort by newest first
             .limit(10); // Limit to last 10 generations
 
-        res.status(200).json({ 
-            success: true, 
+        res.status(200).json({
+            success: true,
             generations,
-            message: "Generations fetched successfully" 
+            message: "Generations fetched successfully"
         });
 
     } catch (error) {
