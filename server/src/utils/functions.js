@@ -11,7 +11,7 @@ const ai = new GoogleGenAI({
 
 export async function generate(payload) {
     let prompt = getFinalPrompt(payload)
-    console.log(prompt)
+    // console.log(prompt)
 
     const response = await ai.models.generateContent({
         model: "gemini-2.5-flash",
