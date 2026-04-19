@@ -1,5 +1,10 @@
 import mongoose from 'mongoose';
 
+const nearbyCollegeSchema = new mongoose.Schema({
+    collegeName: String,
+    collegeWebsiteLink: String
+}, { id: false });
+
 const generationSchema = new mongoose.Schema({
     userId: {
         type: mongoose.Schema.Types.ObjectId,
@@ -24,10 +29,10 @@ const generationSchema = new mongoose.Schema({
         }
     ],
 
-    nearbyColleges: {
-        type: [String],
+    nearbyColleges: [{
+        type: nearbyCollegeSchema,
         default: []
-    },
+    }],
 
     scholarshipAlerts: {
         type: [String],

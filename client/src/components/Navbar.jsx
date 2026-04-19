@@ -24,7 +24,7 @@ const Navbar = ({ user }) => {
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                             </svg>
                         </div>
-                        <div>
+                        <div className="max-sm:hidden">
                             <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
                                 Bright Path
                             </h1>

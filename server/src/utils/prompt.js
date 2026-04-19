@@ -1,40 +1,57 @@
 export const getFinalPrompt = (payload) => {
-    let { currentClass, percentage, favoriteSubject, areasOfInterest, workPreference, careerValues, currentLocation, preferredStudyLocation } = payload;
+    let {
+        currentClass,
+        percentage,
+        favoriteSubject,
+        areasOfInterest,
+        workPreference,
+        careerValues,
+        currentLocation,
+        preferredStudyLocation
+    } = payload;
 
-    return `You are an academic and career guidance assistant for students in India.  
-    Based on the following user inputs, suggest suitable academic streams, courses, career paths, and nearby government colleges.
+    return `You are an academic and career guidance assistant for students in India.
 
-    Inputs:
-    - Current Class: ${currentClass}
-    - Percentage / Aptitude Score: ${percentage}%
-    - Favorite Subject: ${favoriteSubject}
-    - Areas of Interest: ${areasOfInterest}
-    - Work Preference: ${workPreference}
-    - Career Values: ${careerValues}
-    - Current Location: ${currentLocation}
-    - Preferred Study Location: ${preferredStudyLocation}
+IMPORTANT INSTRUCTIONS:
+- You MUST return ONLY valid JSON.
+- DO NOT return arrays of strings for objects.
+- Each item in "nearbyColleges" and "scholarshipAlerts" MUST be an object with ALL required fields.
+- DO NOT skip any field.
+- ALWAYS include valid-looking URLs starting with https://
+- DO NOT explain anything. ONLY return JSON.
 
-    Output Format(strictly follow this JSON structure): {
-        "recommendedStreams": [
-            {
-                "stream": "Science (PCM)",
-                "suggestedCourses": ["B.Tech in Computer Science", "B.Sc in Data Science"],
-                "careerOptions": ["Software Engineer", "Data Scientist"]
-            },
-            {
-                "stream": "Commerce with Maths",
-                "suggestedCourses": ["B.Com (Hons)", "BBA"],
-                "careerOptions": ["Financial Analyst", "Business Consultant"]
-            }
-        ],
-    "nearbyColleges": [
-        "Government Degree College, East Delhi",
-        "Shaheed Rajguru College of Applied Sciences for Women, Delhi University",
-        "Maharaja Agrasen College (DU), East Delhi"
-    ],
-    "scholarshipAlerts": [
-        "Delhi Government Merit Scholarship",
-        "National Means-cum-Merit Scholarship"
-    ]
-    }`
+Inputs:
+- Current Class: ${currentClass}
+- Percentage / Aptitude Score: ${percentage}%
+- Favorite Subject: ${favoriteSubject}
+- Areas of Interest: ${areasOfInterest}
+- Work Preference: ${workPreference}
+- Career Values: ${careerValues}
+- Current Location: ${currentLocation}
+- Preferred Study Location: ${preferredStudyLocation}
+
+Return EXACTLY in this format:
+
+{
+  "recommendedStreams": [
+    {
+      "stream": "string",
+      "suggestedCourses": ["string"],
+      "careerOptions": ["string"]
+    }
+  ],
+  "nearbyColleges": [
+    {
+      "collegeName": "string",
+      "collegeWebsiteLink": "https://example.com"
+    }
+  ],
+  "scholarshipAlerts": [
+    {
+      "scholarshipName": "string",
+      "scholarshipApplyLink": "https://example.com"
+    }
+  ]
 }
+`;
+};

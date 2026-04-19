@@ -49,10 +49,14 @@ app.post('/generate', verifyToken, async (req, res) => {
         }
 
         const data = await generate(req.body);
+        console.log("data ", data);
+
         if (!data) return res.status(500).json({ message: "Generation failed" });
 
         const jsonData = await trimAndParseJson(data.candidates[0].content.parts[0].text);
         if (!jsonData) return res.status(500).json({ message: "Invalid AI response" });
+
+        console.log("jsonData ", jsonData);
 
         const { recommendedStreams = [], nearbyColleges = [], scholarshipAlerts = [] } = jsonData;
 
@@ -64,7 +68,7 @@ app.post('/generate', verifyToken, async (req, res) => {
         });
 
         const savedData = await newGeneration.save();
-        console.log("Saved Generation:", savedData);
+        // console.log("Saved Generation:", savedData);
 
         res.status(201).json(jsonData);
 

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const Dashboard = () => {
@@ -421,12 +421,12 @@ const Dashboard = () => {
                               </svg>
                             </div>
                             <div className="flex-1">
-                              <h5 className="font-medium text-gray-900">{college}</h5>
+                              <h5 className="font-medium text-gray-900">{college.collegeName}</h5>
                               <p className="text-sm text-gray-600">Government Institution</p>
                             </div>
-                            <button className="text-green-600 hover:text-green-700 text-sm font-medium">
+                            <NavLink className="text-green-600 hover:text-green-700 text-sm font-medium" to={college.collegeWebsiteLink}>
                               View Details
-                            </button>
+                            </NavLink>
                           </div>
                         ))}
                       </div>
@@ -455,12 +455,12 @@ const Dashboard = () => {
                               </svg>
                             </div>
                             <div className="flex-1">
-                              <h5 className="font-medium text-gray-900">{scholarship}</h5>
+                              <h5 className="font-medium text-gray-900">{scholarship.scholarshipName}</h5>
                               <p className="text-sm text-gray-600">Available Now</p>
                             </div>
-                            <span className="bg-purple-100 text-purple-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
+                            <NavLink className="bg-purple-100 text-purple-800 text-xs font-medium px-2.5 py-0.5 rounded-full" to={scholarship.scholarshipApplyLink}>
                               Apply Now
-                            </span>
+                            </NavLink>
                           </div>
                         ))}
                       </div>
@@ -581,7 +581,7 @@ const Dashboard = () => {
                           <div className="flex flex-wrap gap-2">
                             {generation.nearbyColleges.slice(0, 3).map((college, collegeIndex) => (
                               <span key={collegeIndex} className="bg-green-100 text-green-800 text-sm px-3 py-1 rounded-full">
-                                {college}
+                                {college.collegeName}
                               </span>
                             ))}
                             {generation.nearbyColleges.length > 3 && (
@@ -686,12 +686,12 @@ const Dashboard = () => {
                                         </svg>
                                       </div>
                                       <div className="flex-1">
-                                        <h7 className="font-medium text-gray-900">{college}</h7>
+                                        <h7 className="font-medium text-gray-900">{college.collegeName}</h7>
                                         <p className="text-sm text-gray-600">Government Institution</p>
                                       </div>
-                                      <button className="text-green-600 hover:text-green-700 text-sm font-medium">
+                                      <NavLink className="text-green-600 hover:text-green-700 text-sm font-medium" to={college.collegeWebsiteLink}>
                                         View Details
-                                      </button>
+                                      </NavLink>
                                     </div>
                                   ))}
                                 </div>
@@ -720,12 +720,12 @@ const Dashboard = () => {
                                         </svg>
                                       </div>
                                       <div className="flex-1">
-                                        <h7 className="font-medium text-gray-900">{scholarship}</h7>
+                                        <h7 className="font-medium text-gray-900">{scholarship.scholarshipName}</h7>
                                         <p className="text-sm text-gray-600">Available Now</p>
                                       </div>
-                                      <span className="bg-purple-100 text-purple-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
+                                      <NavLink className="bg-purple-100 text-purple-800 text-xs font-medium px-2.5 py-0.5 rounded-full" to={scholarship.scholarshipApplyLink}>
                                         Apply Now
-                                      </span>
+                                      </NavLink>
                                     </div>
                                   ))}
                                 </div>
