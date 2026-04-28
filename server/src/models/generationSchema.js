@@ -5,6 +5,11 @@ const nearbyCollegeSchema = new mongoose.Schema({
     collegeWebsiteLink: String
 }, { id: false });
 
+const scholarshipAlertSchema = new mongoose.Schema({
+    scholarshipName: String,
+    scholarshipApplyLink: String
+}, { id: false });
+
 const generationSchema = new mongoose.Schema({
     userId: {
         type: mongoose.Schema.Types.ObjectId,
@@ -34,10 +39,10 @@ const generationSchema = new mongoose.Schema({
         default: []
     }],
 
-    scholarshipAlerts: {
-        type: [String],
+    scholarshipAlerts: [{
+        type: scholarshipAlertSchema,
         default: []
-    }
+    }]
 }, {
     timestamps: true
 });
