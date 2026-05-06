@@ -1,8 +1,11 @@
 import { useState, useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { setFlashMessage } from '../redux/slices/flashMessageSlice.js';
 
 const Dashboard = () => {
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     currentClass: "",
     percentage: "",
@@ -69,10 +72,17 @@ const Dashboard = () => {
       console.log(response.data)
 
       setRecommendations(response.data);
+      dispatch(setFlashMessage({ success: true, message: 'Career recommendations generated successfully' }));
       // Refresh the generations list after successful generation
       fetchPreviousGenerations();
     } catch (err) {
       console.error("Error:", err);
+      const backendError =
+        err?.response?.data?.error ||
+        err?.response?.data?.message ||
+        err?.message ||
+        "An unexpected error occurred while generating recommendations.";
+      dispatch(setFlashMessage({ success: false, message: backendError }));
     } finally {
       setIsLoading(false);
     }

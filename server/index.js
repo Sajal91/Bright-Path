@@ -51,10 +51,20 @@ app.post('/generate', verifyToken, async (req, res) => {
         const data = await generate(req.body);
         console.log("data ", data);
 
-        if (!data) return res.status(500).json({ message: "Generation failed" });
+        if (!data) {
+            return res.status(500).json({
+                message: "Generation failed",
+                error: "Gemini API returned an empty response"
+            });
+        }
 
         const jsonData = await trimAndParseJson(data.candidates[0].content.parts[0].text);
-        if (!jsonData) return res.status(500).json({ message: "Invalid AI response" });
+        if (!jsonData || typeof jsonData === "string") {
+            return res.status(500).json({
+                message: "Invalid AI response",
+                error: typeof jsonData === "string" ? jsonData : "Unable to parse Gemini response JSON"
+            });
+        }
 
         console.log("jsonData ", jsonData);
 
@@ -74,7 +84,7 @@ app.post('/generate', verifyToken, async (req, res) => {
 
     } catch (error) {
         console.error("Error in generate route:", error);
-        res.status(500).json({ message: "Server error", error: error.message });
+        res.status(500).json({ message: "Server error", error: error?.message || "Unknown server error" });
     }
 });
 
